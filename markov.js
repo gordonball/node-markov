@@ -35,7 +35,8 @@ class MarkovMachine {
       if (wordChains[this.words[i]] === undefined) {
         wordChains[this.words[i]] = [this.words[i + 1]];
       } else {
-        wordChains[this.words[i]].push(this.words[i + 1]);
+        (wordChains[this.words[i]]).push(this.words[i + 1]);
+
       }
     }
 
@@ -47,7 +48,7 @@ class MarkovMachine {
       wordChains[this.words[lastIndex]].push(null);
     }
 
-    return wordChains
+    return wordChains;
   }
 
 
@@ -55,17 +56,28 @@ class MarkovMachine {
    *  until it hits a null choice. */
 
   getText() {
-    // TODO: implement this!
+    const chains = this.chains;
 
-    // - start at the first word in the input text
-    // - find a random word from the following-words of that
-    // - repeat until reaching the terminal null
+    let nextWord = Object.keys(chains)[0];
+    const result = [nextWord];
+    // rename nextWord
+    while (nextWord !== null) {
+      const chainLength = chains[nextWord].length;
+      const randomIndex = Math.floor(Math.random() * chainLength);
+      nextWord = chains[nextWord][randomIndex];
+
+      result.push(nextWord);
+    }
+
+    return result.join(" ");
   }
 }
 
-const machine = new MarkovMachine("The cat in the hat");
+const machine = new MarkovMachine(`The cat is in the hat.
+                                   The cat is the cat.
+                                   The hat is a cat.`);
 
 
-machine.getChains();
+console.log(machine.getText());
 
 module.exports = { MarkovMachine };
