@@ -28,7 +28,11 @@ class MarkovMachine {
 
   getChains() {
     const wordChains = {};
-    console.log(this.words);
+
+    if (this.words.length === 1 && this.words[0] === "") {
+      return wordChains;
+    }
+
 
     for (let i = 0; i < ((this.words).length) - 1; i++) {
 
@@ -56,6 +60,10 @@ class MarkovMachine {
    *  until it hits a null choice. */
 
   getText() {
+    if (this.words.length === 1 && this.words[0] === "") {
+      return "There are no words in this text";
+    }
+
     const chains = this.chains;
 
     let nextWord = Object.keys(chains)[0];
@@ -69,15 +77,13 @@ class MarkovMachine {
       result.push(nextWord);
     }
 
-    return result.join(" ");
+    return result.join(" ").trim();
   }
 }
 
-const machine = new MarkovMachine(`The cat is in the hat.
-                                   The cat is the cat.
-                                   The hat is a cat.`);
+const machine = new MarkovMachine(``);
 
-
+// console.log(machine.getChains());
 console.log(machine.getText());
 
 module.exports = { MarkovMachine };
